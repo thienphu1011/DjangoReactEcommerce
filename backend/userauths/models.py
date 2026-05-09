@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from shortuuid.django_fields import ShortUUIDField
 from django.db.models.signals import post_save
 
+
 class User(AbstractUser):
     username= models.CharField(unique=True , max_length=100) 
     email = models.EmailField(unique=True)

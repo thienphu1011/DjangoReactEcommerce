@@ -38,13 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    
     #Custom Apps 
     'store',
     'userauths',
     'vendor',
     'customer',
     'api',
+
+    #Third Party Apps
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
