@@ -67,3 +67,38 @@ export const setOfUser = (accessToken, refreshToken) => {
         username: decodedToken.username,
 }
 };
+
+export const setAuthUser = (accessToken, refreshToken) => {
+    Cookies.set('access_token', accessToken, 
+    { 
+        expire: 1, 
+        secure: true 
+    });
+    Cookies.set('refresh_token', refreshToken,
+    { 
+        expire: 7, 
+        secure: true 
+    });
+    const user= jwt_decode(accessToken) ?? null
+    if (user){
+        useAuthStore.getState().setUser(user);
+    }
+    useAuthStore.getState().setLoading(false);
+    
+}
+
+export const getRefreshToken = async () => {
+    const refresh_token= Cookies.get("refresh_token");
+    const reponse= await axios.post('user/token/refresh/', { refresh: refresh_token });
+    return reponse.data;
+}
+
+export const isAccessTokenExpired = (accessToken) => {
+    try{
+        const decodedToken = jwt_decode(accessToken);
+        return decodedToken.exp  < Date.now() /100;
+    } catch (error) {
+        console.log(error);
+        return true;
+    }
+}
