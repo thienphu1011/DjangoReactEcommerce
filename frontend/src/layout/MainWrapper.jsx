@@ -6,13 +6,14 @@ const MainWrapper = ({children}) => {
     useEffect(() => {
         const handler = async () => {
             setLoading(true);
-
+            await setUser()
+            setLoading(false);
         }
-        await setUser()
-        setLoading(false);
+        
+        handler();
 
-    })
-    handler();
+    }, [])
+    return <>{loading ? null: children}</>
 }
 
 export default MainWrapper
