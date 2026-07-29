@@ -50,10 +50,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -134,6 +136,7 @@ AUTH_USER_MODEL = 'userauths.User'
 
 MEDIA_URL = ' /media/'
 MEDIA_ROOT =   BASE_DIR / 'media'
+CORS_ALLOW_ALL_ORIGINS = True
 JAZZMIN_SETTINGS = {
     'site_title':"Thiên Phú",
     'site_header':"Thiên Phú",
