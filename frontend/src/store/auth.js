@@ -11,7 +11,7 @@ const useAuthStore = create((set , get) => ({
 
     setUser: (user) => set({ allUsersData: user }),
     setLoading: (loading) => set({ loading }),
-    setLoggedIn: () => get().allUsersData !== null,
+    isLoggedIn: () => get().allUsersData !== null,
 }))    
 
 if (import.meta.env.DEV) {
