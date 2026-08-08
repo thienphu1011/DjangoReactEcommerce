@@ -15,4 +15,4 @@ sqlparse==0.5.5
 tzdata==2025.3
 uritemplate==4.2.0
 wheel==0.47.0
-corsheaders==4.3.0
+django-cors-headers==4.3.0
