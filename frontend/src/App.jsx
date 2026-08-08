@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import Login from './views/auth/Login';
+import Register from './views/auth/Register';
 
 import PrivateRoute from "./layout/PrivateRoute";
 function App() {
@@ -10,15 +11,9 @@ function App() {
    <BrowserRouter>
     <Routes>
         <Route path="/login" element={<Login />} />
-
-        <Route
-            path="/"
-            element={
-                <PrivateRoute>
-                   
-                </PrivateRoute>
-            }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<h1>Home Page</h1>} />
+        
     </Routes>
 </BrowserRouter>
   )

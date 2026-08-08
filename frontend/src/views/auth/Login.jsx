@@ -11,6 +11,11 @@ function Login() {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (isLoggedIn()) {
+            navigate('/');
+        }
+    })
     const resetForm = () => {
         setEmail('');
         setPassword('');
