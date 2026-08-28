@@ -19,9 +19,10 @@ function Dashboard() {
                 </div>
                 : <div>
                     <h1>Home Page</h1>
-                    <Link to="/login">Login</Link>
-                    <br />
-                    <Link to="/register">Register</Link>
+                    <div classname='d-flex justify-content-center'>
+                        <Link to="/login" className="btn btn-primary">Login</Link>
+                        <Link to="/register" className="btn btn-secondary">Register</Link>
+                    </div>
                 </div>
             }
         </>

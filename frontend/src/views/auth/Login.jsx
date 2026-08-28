@@ -1,6 +1,6 @@
 import React, { useState , useEffect } from 'react';
 import { login } from '../../utils/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Link} from 'react-router-dom';
 import { useAuthStore } from '../../store/auth';
 
 function Login() {
@@ -15,7 +15,8 @@ function Login() {
         if (isLoggedIn()) {
             navigate('/');
         }
-    })
+    }, [isLoggedIn, navigate]);
+
     const resetForm = () => {
         setEmail('');
         setPassword('');
@@ -26,36 +27,104 @@ function Login() {
         setIsLoading(true);
         const {error} = await login(email, password);
         if (error) {
+            setIsLoading(false);
             alert(error);
         } else {
             navigate('/');
             resetForm();
+            setIsLoading(false);
         }
-        setIsLoading(false);
+        
     };
 
     return(
-        <div>
-            <h2>Login</h2>
-            <p>welcome to the login page</p>
-            <form onSubmit={handleLogin} > 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit" >Login</button>
-            </form>
-                
+        <>
+       <section>
+        <main className="" style={{ marginBottom: 100, marginTop: 50 }}>
+        <div className="container">
+            {/* Section: Login form */}
+            <section className="">
+                <div className="row d-flex justify-content-center">
+                    <div className="col-xl-5 col-md-8">
+                        <div className="card rounded-5">
+                            <div className="card-body p-4">
+                                <h3 className="text-center">Login</h3>
+                                <br />
 
+                                <div className="tab-content text-start">
+                                    <div
+                                        className="tab-pane fade show active"
+                                        id="pills-login"
+                                        role="tabpanel"
+                                        aria-labelledby="tab-login"
+                                    >
+                                        <form onSubmit={handleLogin}>
+                                            {/* Email input */}
+                                            <div className="form-outline mb-4">
+                                                <label className="form-label" htmlFor="loginName">
+                                                    Email Address
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    id="loginName"
+                                                    name="email"
+                                                    value={email}
+                                                    className="form-control"
+                                                    onChange={(e) => setEmail(e.target.value)}
+
+                                                />
+                                            </div>
+
+                                            <div className="form-outline mb-4">
+                                                <label className="form-label" htmlFor="loginPassword">
+                                                    Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    id="loginPassword"
+                                                    name="password"
+                                                    value={password}
+                                                    className="form-control"
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
+
+                                            <button
+                                                            className="btn btn-primary w-100"
+                                                            type="submit"
+                                                            disabled={isLoading}
+                                                        >
+                                                            <span className="mr-2">
+                                                                {isLoading ? "Signing In..." : "Sign In"}
+                                                            </span>
+
+                                                            {isLoading ? (
+                                                                <i className="fas fa-spinner fa-spin" />
+                                                            ) : (
+                                                                <i className="fas fa-sign-in-alt" />
+                                                            )}
+                                                        </button>
+
+                                            <div className="text-center">
+                                                <p className='mt-4'>
+                                                    Don't have an account? <Link to="/register">Register</Link>
+                                                </p>
+                                                <p className='mt-0'>
+                                                    <Link to="/forgot-password/" className='text-danger'>Forgot Password?</Link>
+                                                </p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
+    </main>
+</section>
+</>
     )
 }
        
