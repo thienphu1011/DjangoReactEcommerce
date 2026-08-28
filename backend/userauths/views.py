@@ -25,24 +25,34 @@ def generate_otp():
      return unique_key
 
 class PasswordResetEmailVerify(generics.RetrieveAPIView):
-    permission_classes = (AllowAny, )
-    serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
 
+    def get(self, request, *args, **kwargs):
+        email = kwargs['email']
 
-    def get_object(self):
-          email= self.kwargs['email']
-          user= User.objects.get(email=email)
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {"message": "Email not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-         
-          if user:
-               user.otp= generate_otp()
-               user.save()
-               uidb64= user.pk
-               otp= user.otp
-               link =f"http://localhost:5173/create-new-password?otp={otp}&uidb64={uidb64}"
-               print ("link ====",link)
-          return user
-    
+        user.otp = generate_otp()
+        user.save()
+
+        uidb64 = user.pk
+        otp = user.otp
+
+        link = f"http://localhost:5173/create-new-password?otp={otp}&uidb64={uidb64}"
+
+        print("link ====", link)
+
+        return Response({
+            "otp": otp,
+            "uidb64": uidb64,
+            "link": link
+        }, status=status.HTTP_200_OK)
     
     
 class PasswordChangeView(generics.CreateAPIView):
@@ -54,7 +64,7 @@ class PasswordChangeView(generics.CreateAPIView):
           otp= payload['otp']
           uidb64 = payload['uidb64']
           password = payload['password']
-          user= User.objects.get(id=uidb64 , otp=otp)
+          user= User.objects.get(otp=otp,id=uidb64)
           if user:
                user.set_password(password)
                user.otp= None
