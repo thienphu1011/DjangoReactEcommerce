@@ -12,7 +12,7 @@ function ForgotPassword() {
             await apiInstance.get(`user/password-reset/${email}/`).then((res)=> {
             alert("An email has been sent to your email address with instructions to reset your password.")
             setIsLoading(false)
-            navigate('/create-new-password')
+            navigate( `/create-new-password?otp=${res.data.otp}&uidb64=${res.data.uidb64}`)
             })
         } catch (error){
             alert("Email not found. Please check the email address and try again.");

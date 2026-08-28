@@ -9,8 +9,7 @@ function CreatePassword() {
     const navigate = useNavigate();
     const otp= searchParams.get('otp');
     const uidb64= searchParams.get('uidb64');
-    console.log("OTP:", otp);
-console.log("UID:", uidb64);
+    
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -24,6 +23,7 @@ console.log("UID:", uidb64);
             formData.append('password', password);
             formData.append('otp', otp);
             formData.append('uidb64', uidb64);
+ 
 
             try {
                 await apiInstance.post(`user/password-change/`, formData).then((res) => {
