@@ -1,16 +1,20 @@
 from django.contrib import admin
-from store.models import Category, Product, Gallery ,Specification, Size, Color
+from store.models import Category, Product, Gallery ,Specification, Size, Color, Cart, CartOrder, CartOrderItem
 
 # Register your models here.
 
 class GalleryInline(admin.TabularInline):
     model = Gallery
+    extra = 0 
 class SpecificationInline(admin.TabularInline):
     model = Specification
+    extra = 0
 class ColorInline(admin.TabularInline):
     model = Color
+    extra = 0
 class SizeInline(admin.TabularInline):
-    model = Size        
+    model = Size      
+    extra = 0  
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'vendor', 'status', 'in_stock', 'featured', 'views', 'ratings', 'date','shipping_cost', 'stock_quantity')
     list_filter = ('category', 'vendor', 'status', 'in_stock', 'featured', 'date')
@@ -21,3 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 admin.site.register(Category)
 admin.site.register(Product , ProductAdmin)
+
+admin.site.register(CartOrderItem)
+admin.site.register(CartOrder)
+admin.site.register(Cart)
