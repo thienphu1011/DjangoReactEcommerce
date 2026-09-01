@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
+from django.db.models.signals import post_save
+   
 
 from vendor.models import Vendor
 from shortuuid.django_fields import ShortUUIDField
@@ -179,3 +181,46 @@ class CartOrderItem(models.Model):
     
     def __str__(self):
         return self.oid
+class ProductFaq(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    email = models.CharField(max_length=1000, null=True , blank= True )
+    question = models.CharField(max_length=1000, null=True , blank= True )
+    answer = models.TextField(null=True , blank= True )
+    active = models.Choices(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.question
+
+class Meta:
+    verbose_name_plural = "Product FAQs"
+
+class Review(models.Model):
+    RATING = (
+                (1, "1 Star"),
+                (2, "2 Star"),
+                (3, "3 Star"),
+                (4, "4 Star"),
+                (5, "5 Star"),
+        )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)   
+    review = models.TextField()
+    reply = models.TextField(null=True , blank= True )
+    rating = models.IntegerField(default=True , choices= RATING )
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.product.title
+
+class Meta:
+    verbose_name_plural = "Reviews & Rating"
+
+    def profile(self):
+        return Profile.objects.get(user=self.user)    
+
+@receiver(post_save, sender=Review)
+def update_product_rating(sender,instance , **kwargs):
+    if instance.product:
+        instance.product.save()    
