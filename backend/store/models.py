@@ -69,13 +69,15 @@ class Product(models.Model):
     def color(self):
         return Color.objects.filter(product=self)
     def save(self, *args, **kwargs):
-        self.ratings = self.product_rating()
+        if self.slug == " " or self.slug is None:
+            self.slug = slugify(self.title)
+
         super(Product, self).save(*args, **kwargs)
 
-class Meta:
+    class Meta:
     
-    verbose_name_plural = "Categories"
-    ordering = ['-date']
+        verbose_name_plural = "Products"
+        ordering = ['-date']
 
 class Gallery(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, help_text="Select your product", blank=True, null=True)
@@ -245,9 +247,11 @@ class Meta:
         return Profile.objects.get(user=self.user)    
 
 @receiver(post_save, sender=Review)
-def update_product_rating(sender,instance , **kwargs):
+def update_product_rating(sender, instance, **kwargs):
     if instance.product:
-        instance.product.save()
+        product = instance.product
+        product.ratings = product.product_rating()
+        product.save(update_fields=['ratings'])
     
 class Wishlist(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -36,7 +36,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ['id', 'image' ,'title', 'slug', 'category', 'vendor', 'description', 'price', 'in_stock', 'featured', 'status', 'views', 'ratings', 'date', 'shipping_cost', 'stock_quantity', 'pid' , 'gallery', 'specification', 'size', 'color', 'product_rating', 'rating_count']
+        fields = ['id', 'image' ,'title', 'slug', 'category', 'vendor', 'description', 'price', 'in_stock', 'featured', 'status', 'views', 'ratings', 'date', 'shipping_cost', 'stock_quantity', 'pid' , 'gallery', 'specification', 'size', 'color', 'product_rating', 'rating_count', 'old_price',]
     def __init__(self, *args, **kwargs):
             super(ProductSerializer, self).__init__(*args, **kwargs)
             request = self.context.get('request')
