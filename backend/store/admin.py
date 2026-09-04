@@ -1,5 +1,5 @@
 from django.contrib import admin
-from store.models import Category, Product, Gallery ,Specification, Size, Color, Cart, CartOrder, CartOrderItem
+from store.models import Category, Product, Gallery ,Specification, Size, Color, Cart, CartOrder, CartOrderItem ,Review, Wishlist
 
 # Register your models here.
 
@@ -23,9 +23,12 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     ordering = ('-date',)
     prepopulated_fields = {'slug': ('title',)}
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['product', 'user']
+      
 admin.site.register(Category)
 admin.site.register(Product , ProductAdmin)
-
 admin.site.register(CartOrderItem)
 admin.site.register(CartOrder)
 admin.site.register(Cart)
+admin.site.register(Review , ReviewAdmin)
