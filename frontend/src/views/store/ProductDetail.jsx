@@ -5,12 +5,18 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 function ProductDetail() {
     const [products, setProducts] = useState([]);
-    const [specifications, setSpecifications] = useState([]);
+    const [specification, setSpecification] = useState([]);
+    const [gallery, setGallery] = useState([]);
+    const [color, setColor] = useState([]);
+    const [size, setSize] = useState([]);
     const param = useParams();
     useEffect(() => {
         apiInstance.get(`products/${param.slug}/`).then((res) => {
             setProducts(res.data);
-           setSpecifications(res.data.specifications);
+            setSpecification(res.data.specification);
+            setGallery(res.data.gallery);
+            setColor(res.data.color);
+            setSize(res.data.size);
         });
     }, [param.slug]);
  
@@ -41,9 +47,11 @@ function ProductDetail() {
                             </div>
                         </div>
                         <div className="mt-3 d-flex">
-                            <div className="p-3">
+                            {gallery?.map((g, index) => (
+                               
+                               <div className="p-3" key={index}>
                                 <img
-                                    src="https://images.pexels.com/photos/19090/pexels-photo.jpg?cs=srgb&dl=pexels-webdonut-19090.jpg&fm=jpg"
+                                    src={g.image}
                                     style={{
                                         width: 100,
                                         height: 100,
@@ -53,46 +61,10 @@ function ProductDetail() {
                                     alt="Gallery image 1"
                                     className="ecommerce-gallery-main-img active w-100 rounded-4"
                                 />
-                            </div>
-                            <div className="p-3">
-                                <img
-                                    src="https://images.pexels.com/photos/19090/pexels-photo.jpg?cs=srgb&dl=pexels-webdonut-19090.jpg&fm=jpg"
-                                    style={{
-                                        width: 100,
-                                        height: 100,
-                                        objectFit: "cover",
-                                        borderRadius: 10
-                                    }}
-                                    alt="Gallery image 1"
-                                    className="ecommerce-gallery-main-img active w-100 rounded-4"
-                                />
-                            </div>
-                            <div className="p-3">
-                                <img
-                                    src="https://images.pexels.com/photos/19090/pexels-photo.jpg?cs=srgb&dl=pexels-webdonut-19090.jpg&fm=jpg"
-                                    style={{
-                                        width: 100,
-                                        height: 100,
-                                        objectFit: "cover",
-                                        borderRadius: 10
-                                    }}
-                                    alt="Gallery image 1"
-                                    className="ecommerce-gallery-main-img active w-100 rounded-4"
-                                />
-                            </div>
-                            <div className="p-3">
-                                <img
-                                    src="https://images.pexels.com/photos/19090/pexels-photo.jpg?cs=srgb&dl=pexels-webdonut-19090.jpg&fm=jpg"
-                                    style={{
-                                        width: 100,
-                                        height: 100,
-                                        objectFit: "cover",
-                                        borderRadius: 10
-                                    }}
-                                    alt="Gallery image 1"
-                                    className="ecommerce-gallery-main-img active w-100 rounded-4"
-                                />
-                            </div>
+                            </div> 
+                        ))}
+                            
+                            
                         </div>
                     </div>
                     {/* Gallery */}
@@ -134,30 +106,18 @@ function ProductDetail() {
                                         </th>
                                         <td>{products.category?.title}</td>
                                     </tr>
-                                    <tr>
-                                        <th className="ps-0 w-25" scope="row">
-                                            <strong>Vat</strong>
-                                        </th>
-                                        <td>$1.9</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="ps-0 w-25" scope="row">
-                                            <strong>Model</strong>
-                                        </th>
-                                        <td>Shirt 5407X</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="ps-0 w-25" scope="row">
-                                            <strong>Material</strong>
-                                        </th>
-                                        <td>Cotton 80%</td>
-                                    </tr>
-                                    <tr>
-                                        <th className="ps-0 w-25" scope="row">
-                                            <strong>Delivery</strong>
-                                        </th>
-                                        <td>USA, Europe</td>
-                                    </tr>
+                                    
+                                        {specification?.map((spec, index) =>(
+                                            <tr key={index}>
+                                                 <th className="ps-0 w-25" scope="row">
+                                                <strong>{spec.title}</strong>
+                                            </th>
+                                            <td>{spec.content}</td>
+                                            </tr>
+                                        ))}
+                                    
+                                    
+                                   
                                 </tbody>
                             </table>
                         </div>
@@ -166,8 +126,9 @@ function ProductDetail() {
                             <div className="row flex-column">
                                 {/* Quantity */}
                                 <div className="col-md-6 mb-4">
+                                    <label className="form-label" htmlFor="typeNumber"><b>Quantity</b></label>
                                     <div className="form-outline">
-                                        <label className="form-label" htmlFor="typeNumber"><b>Quantity</b></label>
+                                        
                                         <input
                                             type="number"
                                             id="typeNumber"
@@ -180,47 +141,26 @@ function ProductDetail() {
 
                                 {/* Size */}
                                 <div className="col-md-6 mb-4">
-                                    <div className="form-outline">
-                                        <label className="form-label" htmlFor="typeNumber"><b>Size:</b> XS</label>
+                                    <div className="">
+                                        {size?.map((s, index) => (
+                                            <button className='btn btn-secondary  ms-2' key={index}>
+                                                {s.name}
+                                            </button>
+                                        ))}
+                                                                          
                                     </div>
-                                    <div className='d-flex'>
-                                        <div key={1} className='me-2'>
-                                            <input type="hidden" className='size_name' value={"XS"} />
-                                            <button className='btn btn-secondary size_button'>XS</button>
-                                        </div>
-                                        <div key={1} className='me-2'>
-                                            <input type="hidden" className='size_name' value={"XXL"} />
-                                            <button className='btn btn-secondary size_button'>XXL</button>
-                                        </div>
-                                        <div key={1} className='me-2'>
-                                            <input type="hidden" className='size_name' value={"XL"} />
-                                            <button className='btn btn-secondary size_button'>XL</button>
-                                        </div>
-                                    </div>
+                                    <hr />
                                 </div>
+
 
                                 {/* Colors */}
 
                                 <div className="col-md-6 mb-4">
-                                    <div className="form-outline">
-                                        <label className="form-label" htmlFor="typeNumber"><b>Color:</b> <span>Red</span></label>
-                                    </div>
-                                    <div className='d-flex'>
-                                        <div key={1}>
-                                            <input type="hidden" className='color_name' value={1} />
-                                            <input type="hidden" className='color_image' value={1} />
-                                            <button className='btn p-3 me-2 color_button' style={{ background: "red" }}></button>
-                                        </div>
-                                        <div key={1}>
-                                            <input type="hidden" className='color_name' value={1} />
-                                            <input type="hidden" className='color_image' value={1} />
-                                            <button className='btn p-3 me-2 color_button' style={{ background: "yellow" }}></button>
-                                        </div>
-                                        <div key={1}>
-                                            <input type="hidden" className='color_name' value={1} />
-                                            <input type="hidden" className='color_image' value={1} />
-                                            <button className='btn p-3 me-2 color_button' style={{ background: "green" }}></button>
-                                        </div>
+                                    <div className="">
+                                        {color?.map((c, index) => (
+                                            <button className='btn  p-3' style={{ backgroundColor: `${c.color_code}` }} key={index}></button>
+                                            ))}
+                                                                          
                                     </div>
                                     <hr />
                                 </div>
@@ -273,8 +213,8 @@ function ProductDetail() {
                                 </th>
                                 <td>{products.category?.title}</td>
                             </tr>
-                            {specifications?.map((spec, index) => 
-                            <tr>
+                            {specification?.map((spec, index) => 
+                            <tr key={index}>
                                 <th className="ps-0 w-25" scope="row">
                                     {" "}
                                     <strong>{spec.content}</strong>
